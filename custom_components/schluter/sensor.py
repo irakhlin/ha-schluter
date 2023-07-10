@@ -165,7 +165,9 @@ class SchluterPowerSensor(CoordinatorEntity[DataUpdateCoordinator], SensorEntity
         """Return the state of the sensor."""
         if self.coordinator.data[self._thermostat_id].is_heating:
             return self.coordinator.data[self._thermostat_id].load_measured_watt
-        return ZERO_WATTS
+        else:
+            self.add(ZERO_WATTS)
+        return round((sum(self._wattage_list) / self._values) / 1000, 2)
 
 
 class SchluterEnergySensor(CoordinatorEntity[DataUpdateCoordinator], SensorEntity):
